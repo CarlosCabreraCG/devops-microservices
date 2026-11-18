@@ -1,12 +1,15 @@
 
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, StreamableFile } from '@nestjs/common';
 import { AppService } from './app.service.js';
+import { Readable } from 'stream';
 import { KeyVaultService } from './key-vault/key-vault.service.js';
+import { StorageService } from './storage/storage.service.js';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly keyVaultService: KeyVaultService,
+    private readonly storageService: StorageService,
   ) {}
 
   @Get('hello')
@@ -43,9 +46,16 @@ export class AppController {
   }
 
   @Get('imagen')
-  imagen() {
-    return {
-      mensaje: 'ENDPOINT para Azure Blob Storage',
-    };
+  async imagen(): Promise<StreamableFile> {
+    const nombreImagen = process.env.AZURE_STORAGE_BLOB_NAME || 'imagen.jpg';
+    const resultado = await this.storageService.obtenerImagen(nombreImagen);
+
+    // Cast explícito al tipo Readable que espera StreamableFile
+    const stream = resultado.stream as unknown as Readable;
+
+    return new StreamableFile(stream, {
+      type: resultado.contentType,
+      disposition: 'inline',
+    });
   }
 }
