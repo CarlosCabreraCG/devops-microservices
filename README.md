@@ -68,6 +68,18 @@ Eliminar contenedor:
 docker rm microservicio-container
 ```
 
+Construir nueva versión
+```bash
+docker build -t ccabrerag/microservicio:1.X .  # 1.2 ultima actualización
+```bash
+
+Subir
+
+```bash
+docker push ccabrerag/microservicio:1.X .  # 1.2 ultima actualización
+```bash
+
+
 ## Azure
 
 Registrar microsoft app:
