@@ -17,7 +17,7 @@ export class AppController {
     const nombre = process.env.NOMBRE || 'Tu Nombre';
 
     return {
-      mensaje: `Hola, soy ${nombre}`,
+      mensaje: `¡Saludos!, soy ${nombre}`,
     };
   }
 
