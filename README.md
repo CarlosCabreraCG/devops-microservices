@@ -62,10 +62,39 @@ Consultar logs:
 docker logs microservicio-container
 ```
 
-Eliminar:
+Eliminar contenedor:
 
 ```bash
 docker rm microservicio-container
+```
+
+## Azure
+
+Registrar microsoft app:
+
+```bash
+az provider register --namespace Microsoft.App --wait
+```
+
+Registrar log analytics
+
+```bash
+az provider register --namespace Microsoft.OperationalInsights --wait
+```
+
+Comprobar registro
+
+```bash
+az provider show --namespace Microsoft.App --query registrationState -o tsv
+az provider show --namespace Microsoft.OperationalInsights --query registrationState -o tsv
+```
+
+## ENV
+
+Cambiar key default y usar en powershell:
+```bash
+$env:AZURE_KEY_VAULT_URL="https://TU_KEYVAULT.vault.azure.net/"
+$env:AZURE_SECRET_NAME="mensaje-secreto"
 ```
 
 ## Git
