@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
+import { KeyVaultService } from './key-vault/key-vault.service.js';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { AppService } from './app.service.js';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, KeyVaultService],
 })
 export class AppModule {}
