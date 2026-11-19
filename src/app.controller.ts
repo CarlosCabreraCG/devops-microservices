@@ -4,12 +4,15 @@ import { AppService } from './app.service.js';
 import { Readable } from 'stream';
 import { KeyVaultService } from './key-vault/key-vault.service.js';
 import { StorageService } from './storage/storage.service.js';
+import { DataSource } from 'typeorm';
+import { InternalServerErrorException } from '@nestjs/common';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly keyVaultService: KeyVaultService,
     private readonly storageService: StorageService,
+    private readonly dataSource: DataSource,
   ) {}
 
   @Get('hello')
@@ -57,5 +60,27 @@ export class AppController {
       type: resultado.contentType,
       disposition: 'inline',
     });
+  }
+
+  @Get('consulta')
+  async consulta() {
+    try {
+      const usuario = await this.dataSource.query(
+        'SELECT * FROM usuarios WHERE id_usuario = 10'
+      );
+
+      return {
+        mensaje: 'Consulta realizada correctamente',
+        total: usuario.length,
+        usuario: usuario[0] || null,
+      };
+
+    } catch (error) {
+      console.error('Error consultando PostgreSQL:', error);
+
+      throw new InternalServerErrorException(
+        'No fue posible consultar la base de datos',
+      );
+    }
   }
 }
